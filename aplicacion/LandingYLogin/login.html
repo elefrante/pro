@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS - Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="../LandingYLogin/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a class="logo" href="landing.html">
+                <img style="height: 60px; width: 60px;"src="../imgs/Logo1.png" alt="Logo de la cooperativa" />
+                <h1 style="padding-left: 5px;">CRS</h1>
+            </a>
+            <nav>
+                <ul>
+                    <li><a traduc="asociate" class="boton1" href="landing.html#asociar">¡Asociate!</a></li>
+                    <li><a traduc="inicio" class="boton" href="landing.html">Inicio</a></li>
+                    <li><button onclick="cambiarIdioma()" class="btn-lang">ES/EN</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="login-container">
+        <div class="login-form">
+            <h1 traduc="iniciar_sesion">Iniciar Sesión</h1>
+            <p traduc="ingresar">Ingresa tus credenciales para acceder a tu cuenta</p>
+            
+            <form id="InicioSesion" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label traduc="registro_cedula" for="cedula">Cédula</label>
+                    <input type="text" name="cedula" id="cedula" placeholder="45678901" required>
+                </div>
+                
+                <div class="form-group">
+                    <label traduc="registro_contra" for="contrasenia">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="••••••••" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button traduc="iniciar_sesion" type="submit" class="btn btn-block">Iniciar Sesión</button>
+                    <section style="display: flex;"><p traduc="no_tienes">¿No tienes una cuenta?</p> <a traduc="registra_aqui" style="padding-left: 5px;" href="landing.html#asociar">Regístrate aquí</a></section>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer class="footer">
+    <p>© 2025 Cooperativa Richie Silver (CRS)</p>
+    <a href="https://wa.me/59898843651"><img style="height: 40px; width: 40px;" src="../imgs/whatsapp.png"></a>
+  </footer>
+</body>
+</html>
+<!-- Solicitud POST para iniciar sesión con la API -->
+<script>
+    document.getElementById('InicioSesion').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = {
+            cedula: form.cedula.value,
+            contrasena: form.contrasena.value
+        };
+
+        fetch('../APIUsuarios/api.php/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Respuesta de login:", data);
+            if (data.success) {
+                const usuario = data.usuario;
+
+                const cedula = usuario.cedula;
+                const aceptado = parseInt(usuario.aceptado);
+                const admin = parseInt(usuario.admin);
+
+                if (!cedula) {
+                    alert('Usuario incorrecto.');
+                    return;
+                }
+
+                localStorage.setItem('usuarioCedula', cedula);
+
+                // Lógica según estado
+                if (aceptado === 1) {
+                    // Usuario común aceptado
+                    alert('Inicio de sesión exitoso.');
+                    location.href = "../usuario/inicio.html";
+                } else if (aceptado === 0) {
+                    // Usuario aún no aceptado
+                    alert('Su solicitud para asociarse todavía no ha sido aceptada.');
+                    localStorage.removeItem('usuarioID'); // opcional: limpiar si no lo vas a usar
+                } else {
+                    alert('Su solicitud para asociarse fue rechazada.');
+                    localStorage.removeItem('usuarioID');
+                }
+            } else {
+                alert('Error al iniciar sesión: ' + data.error || data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error al iniciar sesión');
+            console.error(error);
+        });
+    });
+</script>

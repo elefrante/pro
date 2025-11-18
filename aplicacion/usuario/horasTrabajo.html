@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS - Sesion Iniciada</title>
+    <link rel="stylesheet" href="../usuario/css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="../inicioUsuario/script.js" defer></script>
+</head>
+<body>
+    <header>
+    <div class="header-content">
+        <a class="logo" href="../LandingYLogin/landing.html">
+            <img style="height: 60px; width: 60px;" src="../imgs/Logo1.png" alt="Logo de la cooperativa" />
+            <h1 style="padding-left: 5px;">CRS</h1>
+        </a>
+        <h2 id="saludo">Cargando...</h2>
+
+        <!-- Menú de navegación -->
+        <nav>
+            <ul>
+                <li><a href="inicio.html">Inicio</a></li>
+                <li><a href="comprobantes.html">Comprobantes</a></li>
+                <li><a href="horasTrabajo.html" class="active">Registro de Horas</a></li>
+            </ul>
+        </nav>
+        <div class="noti-container">
+                <img id="campana" src="../imgs/campanita.webp" class="campana-icon">
+                <!-- Puntito rojo (notificaciones nuevas) -->
+                <span id="notiIndicator" class="noti-indicator"></span>
+            </div>
+            <!-- Panel desplegable -->
+            <div id="panelNotificaciones" class="panel-noti"></div>
+        <a href="#" class="logout" onclick="cerrarSesion()">Cerrar Sesión</a>
+    </div>
+</header>
+
+<main class="main-content">
+    <!-- PANEL IZQUIERDO -->
+    <section class="left-panel">
+      <div class="data-user">
+        <h2 id="semana-actual" style="margin-top: 10px; text-align: center;">SEMANA ACTUAL: Cargando...</h2>
+        <div class="info-horas">
+          <h4>Horas trabajadas esta semana:</h4>
+          <div style="text-align: center; font-size: 24px; margin: 10px 0; background: black; border-radius: 12px; padding: 5px;" id="horas-actuales">
+            00:00 hs / 21:00 hs
+          </div>
+        </div>
+
+        <!-- Añadir horas -->
+        <div class="info-horas">
+          <h4 for="horasInput">Añadir horas trabajadas:</h4>
+          <input type="time" id="horasInput" value="00:00" step="60">
+          <button class="download-btn" id="btnAgregar">Añadir</button>
+        </div>
+
+        <!-- Solicitud de exoneración -->
+        <div class="info-horas">
+          <h4 for="motivoInput">Petición de exoneración de horas semanales:</h4>
+          <textarea id="motivoInput"></textarea>
+          <button class="download-btn" style="background:blue;" id="btnExonerar">Enviar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL DERECHO -->
+    <aside class="right-panel" id="listaSemanas">
+      <!-- Aquí se cargan dinámicamente las semanas -->
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Cooperativa Richie Silver (CRS)</p>
+    <a href="https://wa.me/59898843651"><img style="height: 40px; width: 40px;" src="../imgs/whatsapp.png"></a>
+  </footer>
+<!-- Modal de motivo -->
+<div id="motivoModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeMotivoModal()">&times;</span>
+    <h3>Motivo de exoneración</h3>
+    <p id="motivoTexto">Cargando...</p>
+  </div>
+</div>
+
+
+</body>
+</html>
+<script>
+const usuarioCedula = localStorage.getItem("usuarioCedula");
+if (!usuarioCedula) {
+    window.location.href = "../LandingYLogin/landing.html";
+}
+
+
+if (!usuarioCedula) {
+  document.getElementById('saludo').innerText = "No has iniciado sesión.";
+} else {
+  fetch(`../APIUsuarios/api.php/usuarios/${usuarioCedula}`)
+    .then(res => res.json())
+    .then(usuario => {
+      const nombreCompleto = `${usuario.nombre} ${usuario.apellido}`;
+      document.getElementById('saludo').innerHTML = `Bienvenido, <strong>${nombreCompleto}</strong>`;
+    });
+}
+
+const listaSemanas = document.getElementById("listaSemanas");
+const horasActuales = document.getElementById("horas-actuales");
+const semanaActual = document.getElementById("semana-actual");
+
+const API_URL = "../APICooperativa/apiHoras.php";
+
+// ---- utilidades
+function formatFecha(fecha = new Date()) {
+  return fecha.toISOString().split("T")[0];
+}
+function decimalAHoras(decimal) {
+  const horas = Math.floor(decimal);
+  const minutos = Math.round((decimal - horas) * 60);
+  return `${String(horas).padStart(2, "0")}:${String(minutos).padStart(2, "0")}`;
+}
+function formatFechaCorta(fecha) {
+  return fecha.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+// ---- calcular rango de semana de una fecha
+function getSemanaRango(fechaStr) {
+  const fecha = new Date(fechaStr + "T00:00:00");
+  console.log("fecha",fechaStr)
+  const dia = fecha.getDay(); // 0=Domingo, 1=Lunes...
+  const lunes = new Date(fecha);
+  lunes.setDate(fecha.getDate() - (dia === 0 ? 6 : dia - 1));
+  const domingo = new Date(lunes);
+  domingo.setDate(lunes.getDate() + 6);
+  return { inicio: lunes, fin: domingo };
+}
+
+// ---- normalizar y asignar semanas
+function normalizarDatos(data) {
+  return data.map(r => ({
+    ...r,
+    solicitud: r.solicitud === true || r.solicitud === "true"
+  }));
+}
+function asignarSemanas(data) {
+  data.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+  let semanas = [];
+  let numSemana = 1;
+
+  data.forEach(r => {
+    const rango = getSemanaRango(r.fecha);
+
+    if (semanas.length === 0 || new Date(r.fecha) > semanas[semanas.length - 1].fin) {
+      semanas.push({
+        num: numSemana,
+        inicio: rango.inicio,
+        fin: rango.fin
+      });
+      numSemana++;
+    }
+
+    r.numSemana = semanas[semanas.length - 1].num;
+    r.semanaInicio = semanas[semanas.length - 1].inicio;
+    r.semanaFin = semanas[semanas.length - 1].fin;
+  });
+
+  return data;
+}
+
+// ---- calcular horas totales de la semana actual
+function calcularHorasSemana(data, numSemana) {
+  return data
+    .filter(r => !r.solicitud && r.numSemana === numSemana)
+    .reduce((total, r) => total + parseFloat(r.cantidad_hs), 0);
+}
+
+// ---- renderizar historial
+function renderSemanas(data) {
+  listaSemanas.innerHTML = "";
+  data.slice().reverse().forEach(s => {
+    let estadoClass = "";
+    if (s.estado === "Completado") estadoClass = "estado-completado";
+    else if (s.estado === "Incompleto") estadoClass = "estado-incompleto";
+    else if (s.estado === "A compensar") estadoClass = "estado-compensar";
+    else if (s.estado === "En proceso") estadoClass = "estado-proceso";
+    else if (s.estado === "Exonerado") estadoClass = "estado-exonerado";
+    else if (s.estado === "Compensado") estadoClass = "estado-compensado";
+
+
+    listaSemanas.innerHTML += `
+      <article class="semana-card ${estadoClass}">
+        <h4>Semana ${s.numSemana} (${formatFechaCorta(s.semanaInicio)} - ${formatFechaCorta(s.semanaFin)})</h4>
+        <p>Horas: ${s.solicitud ? "-" : decimalAHoras(parseFloat(s.cantidad_hs)) + " hs"} / 21:00hs</p>
+        <p>Estado: <b><span class="${estadoClass}1">${s.estado}</span></b></p>
+        ${s.motivo ? `
+  <p>
+    <button class="btn-ver-motivo" onclick="openMotivoModal('${s.motivo.replace(/'/g, "\\'")}')">
+      Ver motivo
+    </button>
+  </p>
+` : ""}
+
+      </article>
+    `;
+  });
+}
+
+
+// ---- cargar datos del usuario
+function cargarHoras() {
+  // Cargar horas del usuario
+  fetch(`${API_URL}?cedula=${usuarioCedula}`)
+    .then(res => res.json())
+    .then(async (data) => {
+      data = normalizarDatos(data);
+      data = asignarSemanas(data);
+
+      // --- Paso 1: obtener los comprobantes compensatorios ACEPTADOS del usuario
+      const comprobantesRes = await fetch(`../APICooperativa/apiComprobantes.php/comprobantes/?cedula=${usuarioCedula}`);
+      const comprobantes = await comprobantesRes.json();
+
+      // Filtramos solo los compensatorios y aceptados
+      const compensatorios = comprobantes.filter(c => 
+        c.tipo?.toLowerCase() === "compensatorio" && 
+        c.estado?.toLowerCase() === "aceptado"
+      );
+
+      // --- Paso 2: recorrer las semanas y marcar las compensadas
+      data.forEach(semana => {
+        compensatorios.forEach(c => {
+          if (c.fecha_optativa) {
+            const fechaComp = new Date(c.fecha_optativa);
+            const { inicio, fin } = getSemanaRango(semana.fecha);
+
+            // Si la fecha del comprobante cae dentro de la semana
+            if (fechaComp >= inicio && fechaComp <= fin) {
+              semana.estado = "Compensado";
+            }
+          }
+        });
+      });
+
+      // --- Paso 3: renderizar semanas
+      renderSemanas(data);
+
+      const ultimaSemana = data[data.length - 1];
+      const totalHoras = calcularHorasSemana(data, ultimaSemana.numSemana);
+
+      horasActuales.innerText = `${decimalAHoras(totalHoras)} hs / 21:00 hs`;
+      semanaActual.innerText = `SEMANA ACTUAL: Semana ${ultimaSemana.numSemana} (${formatFechaCorta(ultimaSemana.semanaInicio)} - ${formatFechaCorta(ultimaSemana.semanaFin)})`;
+    })
+    .catch(err => console.error("Error cargando horas:", err));
+}
+
+
+
+// ---- añadir horas
+document.getElementById("btnAgregar").addEventListener("click", () => {
+  const horasInput = document.getElementById("horasInput").value;
+  if (!horasInput || horasInput === "00:00") {
+    alert("Ingrese un valor válido de horas");
+    return;
+  }
+  const [h, m] = horasInput.split(":").map(Number);
+  const cantidad = h + (m / 60);
+
+  const formData = new FormData();
+  formData.append("cedula", usuarioCedula);
+  formData.append("cantidad_hs", cantidad);
+  formData.append("solicitud", "false");
+  formData.append("estado", "A compensar");
+  formData.append("fecha", formatFecha());
+
+  fetch(API_URL, { method: "POST", body: formData })
+    .then(res => res.json())
+    .then(resp => {
+      if (resp.success) {
+        alert("Horas añadidas correctamente");
+        cargarHoras();
+      } else {
+        alert("Error: " + resp.error);
+      }
+    });
+});
+
+// ---- solicitud de exoneración
+document.getElementById("btnExonerar").addEventListener("click", () => {
+  const motivo = document.getElementById("motivoInput").value.trim();
+  if (!motivo) {
+    alert("Debe escribir un motivo");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("cedula", usuarioCedula);
+  formData.append("solicitud", "true");
+  formData.append("cantidad_hs", "0");
+  formData.append("motivo", motivo);
+  formData.append("estado", "En proceso");
+  formData.append("fecha", formatFecha());
+
+  fetch(API_URL, { method: "POST", body: formData })
+    .then(res => res.json())
+    .then(resp => {
+      if (resp.success) {
+        alert("Solicitud enviada correctamente");
+        cargarHoras();
+      } else {
+        alert("Error: " + resp.error);
+      }
+    });
+});
+
+// ---- iniciar
+cargarHoras();
+
+function openMotivoModal(motivo) {
+  const modal = document.getElementById("motivoModal");
+  const texto = document.getElementById("motivoTexto");
+  texto.innerText = motivo || "No se ha especificado un motivo.";
+  modal.style.display = "flex";
+}
+
+function closeMotivoModal() {
+  document.getElementById("motivoModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById("motivoModal");
+  if (event.target === modal) {
+    closeMotivoModal();
+  }
+};
+
+function cerrarSesion() {
+  localStorage.removeItem("usuarioCedula");
+  window.location.href = "../LandingYLogin/landing.html"; 
+}
+
+async function cargarNotificaciones() {
+    const panel = document.getElementById("panelNotificaciones");
+    const indicator = document.getElementById("notiIndicator");
+
+    const res = await fetch(`../APICooperativa/apiNotificaciones.php?cedula=${usuarioCedula}`);
+    const datos = await res.json();
+
+    panel.innerHTML = "";
+
+    let hayNoVistas = false;
+
+    if (datos.length === 0) {
+        panel.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No hay notificaciones</p>';
+    } else {
+        datos.forEach(n => {
+            if (n.estado == 0) hayNoVistas = true;
+
+            panel.innerHTML += `
+                <div class="noti-card ${n.estado == 0 ? 'no-vista' : ''}">
+                    <div class="noti-header">
+                        <h4>${n.titulo}</h4>
+                        ${n.estado == 0 ? '<span class="noti-badge">●</span>' : ''}
+                    </div>
+                    <p>${n.descripcion_breve}</p>
+                </div>
+            `;
+        });
+    }
+
+    // Mostrar/ocultar indicador según si hay no vistas
+    if (hayNoVistas) {
+        indicator.style.display = "block";
+    } else {
+        indicator.style.display = "none";
+    }
+}
+
+async function marcarComoVistas() {
+    await fetch("../APICooperativa/marcarComoVistas.php?cedula=" + usuarioCedula);
+    cargarNotificaciones();
+}
+
+// Evento de abrir panel
+document.getElementById("campana").addEventListener("click", () => {
+    document.getElementById("panelNotificaciones").classList.toggle("activo");
+    if (document.getElementById("panelNotificaciones").classList.contains("activo")) {
+        marcarComoVistas();
+    }
+});
+
+cargarNotificaciones();
+</script>

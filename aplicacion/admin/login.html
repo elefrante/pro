@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS - Administrador Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a class="logo" href="../LandingYLogin/landing.html">
+                <img style="height: 60px; width: 60px;" src="../imgs/Logo1.png" alt="Logo de la cooperativa" />
+                <h1 style="padding-left: 5px;">CRS</h1>
+            </a>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <div class="login-form">
+            <h1>Iniciar Sesión como Administrador</h1>
+            <form id="InicioSesion" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Jaime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" placeholder="Roos" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-block">Iniciar Sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script>
+document.getElementById('InicioSesion').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const apellido = document.getElementById('apellido').value.trim();
+    const contrasena = document.getElementById('contrasena').value;
+
+    const nombreCompleto = nombre + ' ' + apellido;
+
+    fetch('../APIAdmin/api.php/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nombre_apellidos: nombreCompleto,
+            contrasena: contrasena
+        })
+    })
+    .then(res => res.json())
+    .then(resp => {
+        if(resp.success){
+            localStorage.setItem('adminId', resp.administrativo.id_admin);
+            location.href = '../admin/inicio.php'; // Redirigir al panel de admin
+        } else {
+            alert(resp.error || 'Error en el login');
+        }
+    })
+    .catch(err => console.error('Error:', err));
+});
+</script>
+</body>
+</html>

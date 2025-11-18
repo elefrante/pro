@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS - Administrador Solicitudes</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="../Front/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a class="logo" href="../LandingYLogin/landing.html">
+                <img style="height: 60px; width: 60px;" src="../imgs/Logo1.png" alt="Logo de la cooperativa" />
+                <h1 style="padding-left: 5px;">CRS</h1>
+            </a>
+            <h2 id="saludo">Cargando...</h2>
+        </div>
+    </header>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <h3>ADMINISTRACIÓN</h3>
+            <ul>
+                <li><a href="../admin/inicio.php">Inicio</a></li>
+                <li class="active"><a href="../admin/solicitudes.html">Solicitudes</a></li>
+                <li><a href="../admin/gestiónHoras.php">Gestión de Horas</a></li>
+                <li><a href="../admin/comprobantes.php">Comprobantes</a></li>
+                <li><a href="../admin/exoneraciones.php">Exoneraciones</a></li>
+                <li><a href="../admin/reportes.php">Reportes</a></li>
+            </ul>
+            <a href="#" class="logout-bottom" onclick="cerrarSesion()">Cerrar sesión</a>
+        </aside>
+
+        <main class="main-content">
+            <h2>Solicitudes de Ingreso</h2>
+            <div id="solicitudes-container" class="solicitudes-grid"></div>
+        </main>
+    </div>
+</body>
+</html>
+
+<script>
+const adminId = localStorage.getItem('adminId');
+
+if (!adminId) {
+    document.getElementById('saludo').innerText = "No has iniciado sesión.";
+    window.location.href = "login.html";
+} else {
+    fetch(`../APIAdmin/api.php/administrativos/${adminId}`)
+        .then(res => res.json())
+        .then(admin => {
+            if (admin && admin.nombre_apellidos) {
+                document.getElementById('saludo').innerHTML = 
+                    `${admin.nombre_apellidos}`;
+            } else {
+                document.getElementById('saludo').innerText = "Error al cargar datos.";
+            }
+        })
+        .catch(() => {
+            document.getElementById('saludo').innerText = "Error al conectar con la API.";
+        });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const solicitudesContainer = document.getElementById('solicitudes-container');
+
+    function cargarSolicitudes() {
+        fetch('../APIUsuarios/api.php/usuarios')
+            .then(res => res.json())
+            .then(usuarios => {
+                solicitudesContainer.innerHTML = ''; // limpiar
+
+                // Filtrar solo los usuarios con aceptado = 0
+                const pendientes = usuarios.filter(u => u.aceptado == '0');
+
+                if (pendientes.length === 0) {
+                    solicitudesContainer.innerHTML = '<p>No hay solicitudes pendientes.</p>';
+                    return;
+                }
+
+                pendientes.forEach(usuario => {
+                    const card = document.createElement('div');
+                    card.classList.add('solicitud-card');
+
+                    card.innerHTML = `
+                        <img src="../APIUsuarios/${usuario.perfil}" class="foto-perfil" />
+                        <div>
+                            <strong>Nombre:</strong> ${usuario.nombre}<br>
+                            <strong>Apellido:</strong> ${usuario.apellido}<br>
+                            <strong>Email:</strong> ${usuario.email}<br>
+                            <strong>Teléfono:</strong> ${usuario.telefono}<br>
+                        </div>
+                        <div class="acciones">
+                            <button class="btn aceptar">Aceptar</button>
+                            <button class="btn rechazar">Rechazar</button>
+                        </div>
+                    `;
+
+                    // Botón ACEPTAR
+                    card.querySelector('.aceptar').addEventListener('click', () => {
+                        fetch(`../APIUsuarios/api.php/usuarios/${usuario.cedula}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ aceptado: '1' })
+                        })
+                        .then(res => res.ok ? alert('Usuario aceptado!') : alert('Error'))
+                        .then(() => cargarSolicitudes());
+                    });
+
+                    // Botón RECHAZAR
+                    card.querySelector('.rechazar').addEventListener('click', () => {
+                        fetch(`../APIUsuarios/api.php/usuarios/${usuario.cedula}`, {
+                            method: 'DELETE'
+                        })
+                        .then(res => res.ok ? alert('Usuario rechazado!') : alert('Error al eliminar'))
+                        .then(() => cargarSolicitudes());
+                    });
+
+                    solicitudesContainer.appendChild(card);
+                });
+            })
+            .catch(err => console.error('Error al cargar solicitudes:', err));
+    }
+
+    cargarSolicitudes();
+});
+
+function cerrarSesion() {
+  // Borrar sesión del admin
+  localStorage.removeItem('adminId');
+
+  // Redirigir al login
+  window.location.href = "login.html";
+}
+</script>

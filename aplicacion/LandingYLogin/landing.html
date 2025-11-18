@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS - Inicio</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="../LandingYLogin/script.js" defer></script>
+  </head>
+<body>
+    <header>
+        <div class="header-content">
+            <a class="logo" href="#">
+                <img style="height: 60px; width: 60px;"src="../imgs/Logo1.png" alt="Logo de la cooperativa" />
+                <h1 style="padding-left: 5px;">CRS</h1>
+            </a>
+            <nav>
+                <ul>
+                    <li><a traduc="asociate" class="boton1" href="#asociar">¡Asociate!</a></li>
+                    <li><a traduc="iniciar_sesion" class="boton" href="login.html">Iniciar Sesión</a></li>
+                    <li><button onclick="cambiarIdioma()" class="btn-lang">ES/EN</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 traduc="hero_titulo">Construí con nosotros el hogar donde tus sueños crecen.</h1>
+            <p traduc="hero_desc" class="descripcion">
+                En CRS (Cooperativa Richie Silver), creemos que un hogar se construye con más que ladrillos: se construye con solidaridad, esfuerzo compartido y sueños comunes.
+                Somos una cooperativa de vivienda de ayuda mutua que impulsa la autogestión y el trabajo colectivo para hacer posible el acceso a una vivienda digna.
+                Nuestro símbolo (un apretón de manos bajo un techo de colores) representa lo que somos: unión, compromiso y diversidad bajo un mismo objetivo.
+            </p>
+        </section>
+
+        <section class="info-bloques">
+            <article>
+                <h3 traduc="vision_titulo">Nuestra Visión y Compromiso:</h3>
+                <p traduc="vision_desc">En CRS creemos que la vivienda es un derecho y un proyecto colectivo. Nos comprometemos a fomentar la autogestión, la solidaridad y el trabajo compartido para que cada familia acceda a un hogar digno, construido con esfuerzo común.</p>
+            </article>
+            <article>
+                <h3 traduc="como_titulo">Cómo funciona la Cooperativa:</h3>
+                <p traduc="como_desc">Nos organizamos bajo ayuda mutua y autogestión. Cada asociado participa en las decisiones, aporta cuotas mensuales y realiza horas de trabajo comunitario. Las asambleas garantizan que todos podamos opinar y construir juntos nuestro futuro.</p>
+            </article>
+            <article>
+                <h3 traduc="historia_titulo">Nuestra Historia:</h3>
+                <p traduc="historia_desc">La CRS nació por la iniciativa de Richie Silver y un grupo de familias. Inspirados por la solidaridad, comenzaron a reunirse y a proyectar sus viviendas. Desde entonces, trabajamos con esfuerzo colectivo y compromiso para construir un hogar digno para todos.</p>
+            </article>
+        </section>
+    </main>
+    <div style="margin-left: 60px; display: flex; align-items: center;">
+    <h1 traduc="faq_titulo">Preguntas frecuentes</h1>
+    <img style="height: 60px; width: 60px; margin-left: 10px;"src="../imgs/Sin título.png">
+    </div>
+    <section class="faq-container" id="faq-box"> <!-- Contenedor principal de la sección de FAQ -->
+      <button class="arrow left" onclick="prevFAQ()">‹</button> <!-- Botón de flecha izquierda para retroceder -->
+      <div id="faq-question" class="faq-question">¿Cómo asociarse?</div> <!-- Elemento donde se muestra la pregunta -->
+      <div id="faq-answer" class="faq-answer">Podés completar el formulario de inscripción o acercarte a nuestras reuniones abiertas.</div> <!-- Elemento donde se muestra la respuesta -->
+      <button class="arrow right" onclick="nextFAQ()">›</button> <!-- Botón de flecha derecha para avanzar -->
+    </section>
+
+    <!-- Noticias / novedades -->
+     <div style="margin: 60px 0px;">
+  <div style="margin-left: 60px; display: flex; align-items: center;">
+    <h1 traduc="noticias_titulo">Noticias</h1>
+    <img style="height: 60px; width: 60px; margin-left: 10px;" src="../imgs/megafonoo.png" alt="Ícono Noticias">
+  </div>
+
+  <section class="noticia-container" id="noti-box">
+    <button class="arrow left1" onclick="prevNoti()">‹</button>
+    <div class="noticia-contenido">
+      <h3 id="noti" class="noticia-titulo">Fiesta de Integración</h3>
+      <p id="noti1" class="noticia-texto">
+        El 10 de agosto celebraremos una jornada de integración con juegos para niños, música y merienda compartida. Un espacio para fortalecer vínculos y celebrar nuestros avances.
+      </p>
+      </div>
+      <!-- Imagen que se actualiza dinámicamente -->
+      <img 
+        id="noti-img"
+        src="../imgs/nenes.avif" 
+        alt="Imagen noticia"
+        class="noti-img">
+    <button class="arrow right1" onclick="nextNoti()">›</button>
+  </section>
+</div>
+
+
+    <section id="asociar" class="register-container">
+  <div class="register-form">
+    <h1 traduc="registro_titulo">Registro de Nuevo Socio</h1>
+    <p traduc="registro_desc">¡Complete el siguiente formulario para mandar una solicitud para asociarte!</p>
+
+    <form id="registro" enctype="multipart/form-data">
+  <div class="form-group">
+    <label traduc="registro_foto" for="perfil">Foto de perfil</label>
+    <input type="file" name="perfil" id="perfil" accept="image/*" required>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label traduc="registro_nombre" for="Nombre">Nombre</label>
+      <input type="text" name="Nombre" id="Nombre" placeholder="Ej: Juan" required>
+    </div>
+    <div class="form-group">
+      <label traduc="registro_apellido" for="Apellido">Apellido</label>
+      <input type="text" name="Apellido" id="Apellido" placeholder="Ej: Pérez" required>
+    </div>
+  </div>
+  <div class="form-group">
+      <label traduc="registro_cedula" for="cedula">Cédula</label>
+      <input type="text" name="cedula" id="cedula" placeholder="Ej: 45678901" required>
+    </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label traduc="registro_fechaNac" for="FechaNacimiento">Fecha de Nacimiento</label>
+      <input type="date" name="FechaNacimiento" id="FechaNacimiento" required>
+    </div>
+    <div class="form-group">
+      <label traduc="registro_telefono" for="Telefono">Teléfono</label>
+      <input type="tel" name="Telefono" id="Telefono" placeholder="099999999" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label traduc="registro_correo" for="Email">Correo Electrónico</label>
+    <input type="email" name="Email" id="Email" placeholder="ejemplo@correo.com" required>
+  </div>
+
+  <div class="form-group">
+    <label traduc="registro_contra" for="Contrasena">Contraseña</label>
+    <input type="password" name="Contrasena" id="Contrasena" placeholder="••••••••" required>
+  </div>
+
+  <div class="form-actions">
+    <button traduc="registrar" type="submit" class="btn btn-primary">Registrarse</button>
+    <section style="display: flex;"><p traduc="ya_tienes">¿Ya tienes una cuenta?</p> <a traduc="inicia_aqui" style="padding-left: 5px;" href="login.html">Inicia sesión aquí</a></section>
+  </div>
+</form>
+
+  </div>
+
+  <div class="register-image">
+    <img src="../imgs/unidas.png" alt="Imagen registro cooperativa">
+  </div>
+</section>
+
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <p>© 2025 Cooperativa Richie Silver (CRS)</p>
+    <a href="https://wa.me/59898843651"><img style="height: 40px; width: 40px;" src="../imgs/whatsapp.png"></a>
+  </footer>
+</body>
+</html>
+<script>
+document.getElementById('registro').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const fileInput = form.perfil;
+    const file = fileInput.files[0];
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const data = {
+            cedula: form.cedula.value,
+            nombre: form.Nombre.value,
+            apellido: form.Apellido.value,
+            email: form.Email.value,
+            contrasena: form.Contrasena.value,
+            fecha_nacimiento: form.FechaNacimiento.value,
+            telefono: form.Telefono.value,
+            perfil: event.target.result // base64 de la foto
+        };
+
+        console.log("Enviando usuario:", JSON.stringify(data));
+
+        fetch('../APIUsuarios/api.php/usuarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Usuario registrado correctamente');
+                location.reload();
+            } else {
+                alert('Error: ' + (data.error || 'No se pudo registrar usuario'));
+            }
+        })
+        .catch(error => {
+            alert('Error al registrar usuario');
+            console.error(error);
+        });
+    };
+    reader.readAsDataURL(file);
+});
+</script>

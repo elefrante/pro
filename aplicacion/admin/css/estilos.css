@@ -1,0 +1,579 @@
+/* Reset básico */
+* {
+  margin: 0; /* Quita márgenes por defecto */
+  padding: 0; /* Quita padding por defecto */
+  box-sizing: border-box; /* Incluye borde y padding en el tamaño */
+}
+
+body, html {
+  scroll-behavior: smooth; /* Desplazamiento suave */
+  display: flex; /* Flex para el body */
+  flex-direction: column; /* Columnas */
+  min-height: 100vh; /* Al menos toda la altura de la ventana */
+  color: #0a0a0a; /* Color de texto por defecto */
+  font-family: 'Inter', sans-serif; /* Fuente principal */
+}
+
+header {
+  background-color: #1a1a1a; /* Fondo oscuro */
+  color: #ffffff; /* Texto claro */
+  padding: 5px 0; /* Espaciado vertical */
+  position: sticky; /* Siempre arriba */
+  top: 0; /* Pegado arriba */
+  width: 100%; /* Todo el ancho */
+  z-index: 1000; /* Por encima de otros elementos */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra */
+}
+
+.header-content {
+  display: flex; /* Flexbox */
+  justify-content: space-between; /* Separar elementos */
+  align-items: center; /* Centrar verticalmente */
+  max-width: 1200px; /* Ancho máximo */
+  margin: 0 auto; /* Centrar en la página */
+  padding: 0 6px; /* Espaciado lateral */
+}
+
+.logo {
+  display: flex; /* Flex */
+  align-items: center; /* Centrado vertical */
+  transition: transform 0.3s ease;
+  text-decoration: none;
+  color:#ffffff;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+nav ul {
+  list-style: none; /* Sin viñetas */
+  display: flex; /* Horizontal */
+  gap: 15px; /* Espacio entre ítems */
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    background-color: #111;
+    color: white;
+    width: 220px;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar ul li.active a {
+    background-color: #333;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.logout-bottom {
+  margin-top: auto; /* se pega abajo */
+  background-color: #2b2b2b;
+  color: #fff;
+  text-align: center;
+  display: block;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+/* Hover rojo */
+.logout-bottom:hover {
+  background-color: #c0392b;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background: #e0e0e0;
+}
+
+.solicitudes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.solicitud-card {
+    display: flex;
+    align-items: center;
+    background: #1e1e1e;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    gap: 20px;
+    transition: transform 0.5s ease;
+}
+
+.solicitud-card:hover {
+    transform: scale(1.01);
+}
+
+.foto-perfil {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.acciones {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn.aceptar {
+    background-color: #86b67f;
+    color: black;
+    transition: background-color 0.5s;
+}
+
+.btn.aceptar:hover {
+    background-color: #0f0;
+    color: white;
+}
+
+.btn.rechazar {
+    background-color: #faa58d;
+    color: black;
+    transition: background-color 0.5s;
+}
+
+.btn.rechazar:hover {
+    background-color: #f00;
+    color: white;
+}
+
+/* Contenedor del login */
+.login-container {
+  display: flex;                          /* Flexbox para centrar */
+  justify-content: center;               /* Centrado horizontal */
+  align-items: center;                   /* Centrado vertical */
+  min-height: calc(100vh - 140px);       /* Altura restante entre header y footer */
+  background-color: #ffffff;             /* Mismo fondo claro que el sitio */
+  padding: 40px 20px;                    /* Espaciado general */
+  background-image: url('../imgs/manospasto.jpg'); /* Ruta relativa o URL */
+  background-size: cover;     /* Ajusta para que cubra todo el fondo */
+  background-position: center;/* Centra la imagen */
+  background-repeat: no-repeat; /* No se repite */
+}
+
+/* Caja de login */
+.login-form {
+  background-color: #ffffff;             /* Fondo blanco */
+  padding: 40px;                         /* Espaciado interno */
+  border-radius: 10px;                   /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);/* Sombra igual al resto del sitio */
+  max-width: 450px;                      /* Ancho máximo */
+  width: 100%;                           /* Que no se pase */
+  transition: transform 0.3s ease;       /* Suave al hacer hover */
+}
+
+/* Efecto hover */
+.login-form:hover {
+  transform: scale(1.01);
+}
+
+/* Título */
+.login-form h1 {
+  font-size: 2rem;                       /* Tamaño destacado */
+  margin-bottom: 10px;                  /* Separación */
+  color: #1a1a1a;                        /* Color fuerte */
+}
+
+/* Texto descriptivo */
+.login-form p {
+  margin-bottom: 20px;
+  color: #555;                           /* Gris medio */
+}
+
+/* Formulario */
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Etiquetas */
+.auth-form label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Inputs */
+.auth-form input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+/* Focus en input */
+.auth-form input:focus {
+  outline: none;
+  border-color: #faa58d;
+}
+
+/* Acciones del login */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Botón de login */
+.form-actions .btn.btn-block {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Hover del botón */
+.form-actions .btn.btn-block:hover {
+  background-color: #86b67f;
+  color: #0a0a0a;
+}
+
+/* Texto de abajo */
+.form-actions p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Link de registro */
+.form-actions .register-link {
+  color: #1a1a1a;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+/* Hover del link */
+.form-actions .register-link:hover {
+  color: #f5de89;
+}
+
+/* -------- EXONERACIONES -------- */
+
+.exoneraciones-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.exoneracion-card {
+  color: white;
+  background: #2a2a2a;
+  padding: 15px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.exoneracion-card:hover {
+  transform: scale(1.01);
+}
+
+.ver-mas {
+  background-color: transparent;
+  color: #f5c16c;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.ver-mas:hover {
+  color: #f5de89;
+}
+
+.estado-texto {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+.estado-concedido {
+  color: #9ccc65;
+}
+
+.estado-denegado {
+  color: #ef9a9a;
+}
+
+.gestor {
+  color: #f5c16c;
+  font-size: 0.9rem;
+}
+
+.modal {
+  color: white;
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  background: #2a2a2a;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 10% auto;
+  width: 50%;
+}
+
+.close {
+  color: #fff;
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* RESPONSIVE - ADMIN */
+@media (max-width: 950px) {
+  .admin-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sidebar h3 {
+    margin: 0;
+  }
+
+  .sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .sidebar ul li {
+    margin: 0;
+  }
+
+  .sidebar ul li a {
+    padding: 6px 10px;
+    font-size: 13px;
+    display: inline-block;
+  }
+
+  .logout-bottom {
+    padding: 8px 12px;
+    font-size: 12px;
+    margin-top: 0;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .modal-content {
+    width: 80%;
+    margin: 20% auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 4px;
+  }
+
+  .header-content h2 {
+    display: none;
+  }
+
+  .sidebar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sidebar ul {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .sidebar ul li a {
+    display: block;
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .logout-bottom {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 15px;
+  }
+
+  .solicitud-card {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .acciones {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  article {
+    padding: 12px;
+    margin: 10px 0;
+  }
+
+  article h2 {
+    font-size: 16px;
+  }
+
+  article p {
+    font-size: 13px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+    margin: 30% auto;
+  }
+
+  .exoneracion-card {
+    padding: 12px;
+  }
+
+  .exoneracion-card h3 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    height: 45px !important;
+    width: 45px !important;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+    padding-left: 3px !important;
+  }
+
+  .sidebar {
+    padding: 10px;
+  }
+
+  .sidebar h3 {
+    font-size: 14px;
+  }
+
+  .sidebar ul li a {
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  .main-content h1 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .btn {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  article {
+    padding: 10px;
+  }
+
+  article h2 {
+    font-size: 14px;
+  }
+
+  article p {
+    font-size: 12px;
+    margin: 6px 0;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 12px;
+    margin: 40% auto;
+  }
+
+  .close {
+    font-size: 20px;
+  }
+
+  .exoneracion-card {
+    padding: 10px;
+  }
+
+  .foto-perfil {
+    width: 50px;
+    height: 50px;
+  }
+<<<<<<< HEAD
+}
+=======
+}
+>>>>>>> a1d1da39d14c584b7ee50edaab2884120627b86d

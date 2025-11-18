@@ -1,0 +1,753 @@
+/* Reset básico */
+* {
+  margin: 0; /* Quita márgenes por defecto */
+  padding: 0; /* Quita padding por defecto */
+  box-sizing: border-box; /* Incluye borde y padding en el tamaño */
+}
+
+body, html {
+  scroll-behavior: smooth; /* Desplazamiento suave */
+  display: flex; /* Flex para el body */
+  flex-direction: column; /* Columnas */
+  min-height: 100vh; /* Al menos toda la altura de la ventana */
+  color: #0a0a0a; /* Color de texto por defecto */
+  font-family: 'Inter', sans-serif; /* Fuente principal */
+}
+
+header {
+  background-color: #1a1a1a; /* Fondo oscuro */
+  color: #ffffff; /* Texto claro */
+  padding: 5px 0; /* Espaciado vertical */
+  position: sticky; /* Siempre arriba */
+  top: 0; /* Pegado arriba */
+  width: 100%; /* Todo el ancho */
+  z-index: 1000; /* Por encima de otros elementos */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra */
+}
+
+.header-content {
+  display: flex; /* Flexbox */
+  justify-content: space-between; /* Separar elementos */
+  align-items: center; /* Centrar verticalmente */
+  max-width: 1200px; /* Ancho máximo */
+  margin: 0 auto; /* Centrar en la página */
+  padding: 0 6px; /* Espaciado lateral */
+}
+
+.logo {
+  display: flex; /* Flex */
+  align-items: center; /* Centrado vertical */
+  transition: transform 0.3s ease;
+  text-decoration: none;
+  color:#ffffff;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+nav ul {
+  list-style: none; /* Sin viñetas */
+  display: flex; /* Horizontal */
+  gap: 15px; /* Espacio entre ítems */
+}
+
+.hero {
+  position: relative; /* Para el fondo animado */
+  padding: 60px 40px; /* Espaciado interno */
+  text-align: left; /* Alinear a la izquierda */
+  color: #0a0a0a; /* Texto blanco */
+  overflow: hidden; /* Oculta desbordes */
+}
+
+.hero::before {
+  content: ""; /* Pseudo-elemento */
+  position: absolute; /* Absoluto sobre el hero */
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: -2; /* Detrás de todo */
+  animation: cambiarFondo 15s infinite; /* Animación de fondo */
+  background-size: cover; /* Cubrir toda el área */
+  background-position: center; /* Centrado */
+}
+
+.hero::after {
+  content: ""; /* Capa de oscurecimiento */
+  position: absolute; /* Absoluto */
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); /* Oscuro translúcido */
+  z-index: -1; /* Entre fondo y contenido */
+}
+
+.hero h1 {
+  font-size: 3rem; /* Tamaño grande */
+  font-weight: 600; /* Negrita */
+  margin-bottom: 20px; /* Separación inferior */
+  max-width: 700px; /* Máximo ancho */
+}
+
+.hero .descripcion {
+  font-size: 1rem; /* Tamaño normal */
+  max-width: 500px; /* Máximo ancho */
+  line-height: 1.5; /* Espaciado de líneas */
+  color:#ffffff;
+}
+
+@keyframes cambiarFondo {
+  0%   { background-image: url('../../imgs/decada-del-80.jpg'); }
+  25%  { background-image: url('../../imgs/decada-del-80(2).jpg');}
+  50%  { background-image: url('../../imgs/decada-del-80(1).jpg'); }
+  75%  { background-image: url('../../imgs/decada-del-80(3).jpg'); }
+  100% { background-image: url('../../imgs/decada-del-80.jpg'); }
+}
+
+.info-bloques {
+  position: relative; /* Para la franja */
+  display: grid; /* Grid de artículos */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsivo */
+  gap: 30px; /* Separación entre bloques */
+  padding: 60px 20px; /* Espaciado */
+  justify-content: center; /* Centrar grid */
+}
+
+.info-bloques::before {
+  content: ""; /* Franja */
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; /* Todo el ancho */
+  height: 40%; /* Parte del alto */
+  background: #0a0a0a; /* Color negro */
+  z-index: -1; /* Detrás de los artículos */
+}
+
+.info-bloques article {
+  background: #1a1a1a; /* Fondo del bloque */
+  color: #ffffff; /* Texto blanco */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 30px; /* Espaciado interno */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra suave */
+  max-width: 800px; /* Máximo ancho */
+  margin: 0 auto; /* Centrado horizontal */
+  transition: transform 0.3s ease;
+}
+
+.info-bloques article:hover {
+  transform: scale(1.05);
+}
+
+.boton {
+  position: relative;                  /* Para que el ::before se posicione relativo */
+  display: inline-block;               /* Botón en línea */
+  padding: 6px 8px;                  /* Espaciado interno */
+  color: #0a0a0a;                        /* Color del texto */
+  background-color: #ffffff;              /* Color base del botón */
+  border: 2px solid #0a0a0a;             /* Borde inicial blanco */
+  border-radius: 5px;
+  text-decoration: none;               /* Sin subrayado */
+  overflow: hidden;                    /* Oculta desbordes */
+  z-index: 0;                          /* Contexto stacking */
+  transition: border-color 0.4s ease;  /* Animación del color del borde */
+}
+
+/* Capa del fondo negro animado */
+.boton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #8fd0ee;
+  transform: scaleX(0);                /* Empieza oculto */
+  transform-origin: left;              /* Expande desde la izquierda */
+  transition: transform 0.4s ease;     /* Animación de expansión */
+  z-index: -1;                         /* Debajo del texto y borde */
+}
+
+/* Color de texto al hacer hover */
+.boton:hover {
+  color: #0a0a0a;
+  border-color: #86b67f;                   /* Cambia el color del borde al pasar el mouse */
+}
+
+/* Fondo aparece al hacer hover */
+.boton:hover::before {
+  transform: scaleX(1);                /* Escala en X al 100% */
+  transform-origin: left;
+}
+
+.boton1 {
+  position: relative;                  /* Para que el ::before se posicione relativo */
+  display: inline-block;               /* Botón en línea */
+  padding: 6px 8px;                  /* Espaciado interno */
+  color: #0a0a0a;                        /* Color del texto */
+  background-color: #ffffff;              /* Color base del botón */
+  border: 2px solid #0a0a0a;             /* Borde inicial blanco */
+  border-radius: 5px;
+  text-decoration: none;               /* Sin subrayado */
+  overflow: hidden;                    /* Oculta desbordes */
+  z-index: 0;                          /* Contexto stacking */
+  transition: border-color 0.4s ease;  /* Animación del color del borde */
+}
+
+/* Capa del fondo negro animado */
+.boton1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5de89;
+  transform: scaleX(0);                /* Empieza oculto */
+  transform-origin: left;              /* Expande desde la izquierda */
+  transition: transform 0.4s ease;     /* Animación de expansión */
+  z-index: -1;                         /* Debajo del texto y borde */
+}
+
+/* Color de texto al hacer hover */
+.boton1:hover {
+  color: #0a0a0a;
+  border-color: #faa58d;                  /* Cambia el color del borde al pasar el mouse */
+}
+
+/* Fondo aparece al hacer hover */
+.boton1:hover::before {
+  transform: scaleX(1);                /* Escala en X al 100% */
+  transform-origin: left;
+}
+
+.faq-container {
+  display: flex; /* Coloca los elementos en fila */
+  justify-content: space-between; /* Deja espacio entre los elementos */
+  align-items: center; /* Centra los elementos verticalmente */
+  margin: 10px auto; /* Margen superior e inferior, y centrado horizontal */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  background-color: #f9f9f9; /* Fondo claro */
+  position: relative;  /*Necesario para posicionar las flechas absolutamente dentro */
+  min-height: 200px;
+  max-width: 1100px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra */
+  transition: transform 0.3s ease;
+}
+
+.faq-question, .faq-answer {
+  width: 45%; /* Cada lado ocupa el 45% del ancho del contenedor */
+  font-size: 1.2em; /* Tamaño de fuente */
+  transition: opacity 0.5s ease; /* Transición suave de opacidad */
+}
+
+.faq-question {
+  font-weight: bold; /* Pregunta en negrita */
+  color: #0a0a0a; /* Color oscuro para la pregunta */
+}
+
+.faq-answer {
+  color: #555; /* Color gris para la respuesta */
+}
+
+.arrow {
+  position: absolute; /* Posicionamiento absoluto respecto al contenedor */
+  top: 50%; /* Centrado vertical */
+  transform: translateY(-50%); /* Ajusta el centrado vertical */
+  font-size: 2em; /* Tamaño grande para la flecha */
+  background: none; /* Sin fondo */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cursor en forma de mano al pasar */
+  color: #0a0a0a; /* Color de flecha */
+  padding: 0 10px; /* Espacio horizontal */
+}
+
+.arrow.left, .arrow.left1 { left: 0px;} /* Coloca la flecha izquierda a la izquierda del contenedor */
+.arrow.right, .arrow.right1 { right: 0px; } /* Coloca la flecha derecha a la derecha del contenedor */
+
+.arrow.left:hover {
+  color: #faa58d; /* Cambia color de flecha al pasar el mouse */
+}
+
+.arrow.right:hover {
+  color: #8fd0ee; /* Cambia color de flecha al pasar el mouse */
+}
+
+.faq-container:hover {
+  transform: scale(1.01);
+}
+
+.noticia-container {
+  display: flex;                      /* Flex para colocar todo en línea */
+  align-items: center;                /* Centrar verticalmente */
+  justify-content: space-between;     /* Separar flechas y contenido */
+  background-color: #0a0a0a;          /* Fondo negro */
+  border-radius: 10px;                /* Bordes redondeados */
+  margin: 0 auto;                     /* Centrar horizontalmente */
+  padding: 0 20px;                    /* Espaciado horizontal dentro del contenedor */
+  max-width: 1100px;
+  width: 100%;
+  min-height: 200px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra */
+  position: relative;                 /* Para flechas con absolute */
+  transition: transform 0.3s ease;
+}
+
+.noticia-container:hover{
+  transform: scale(1.01);
+}
+
+.noticia-contenido {
+  flex: 1;                            /* Ocupa todo el espacio disponible */
+  color: #ffffff;                     /* Texto blanco */
+  padding: 20px;
+}
+
+.noticia-titulo {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  transition: opacity 0.5s ease; /* Transición suave de opacidad */
+}
+
+.noticia-texto {
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: opacity 0.5s ease; /* Transición suave de opacidad */
+}
+
+.noti-img {
+  width: 200px;                       /* Tamaño fijo de la imagen */
+  height: 150px;
+  object-fit: cover;                  /* Para que la imagen recorte bien */
+  border-radius: 8px;
+  margin-left: 20px;                  /* Separación respecto al contenido */
+  transition: opacity 0.5s ease; /* Transición suave de opacidad */
+}
+
+.arrow.left1,
+.arrow.right1 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0a0a0a;
+  padding: 0 10px;
+}
+
+.arrow.left1 {
+  left: 0px;
+  color: white;
+}
+
+.arrow.right1 {
+  right: 0px;
+  color: white;
+}
+
+.arrow.left1:hover {
+  color: #f5de89;
+}
+
+.arrow.right1:hover {
+  color: #86b67f;
+}
+
+
+/* Contenedor de las dos columnas */
+.register-container {
+  display: flex;                /* Flexbox en fila */
+  gap: 40px;                    /* Espacio entre columnas */
+  max-width: 1200px;            /* Máximo ancho */
+  margin: 40px auto;            /* Centrado con espacio arriba y abajo */
+  padding: 20px;                /* Espaciado interno */
+  align-items: flex-start;      /* Alinea arriba */
+  flex-wrap: wrap;              /* Permite que baje en pantallas pequeñas */
+}
+
+
+/* Columna izquierda con el formulario */
+.register-form {
+  flex: 1 1 500px;              /* Crece, encoge, mínimo 500px */
+  background-color: #ffffff;    /* Fondo blanco */
+  padding: 30px;                /* Espaciado interno */
+  border-radius: 10px;          /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4); /* Sombra */
+  transition: transform 0.3s ease;
+}
+
+.register-form:hover {
+  transform: scale(1.01);
+}
+
+/* Título del formulario */
+.register-form h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+/* Descripción */
+.register-form p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Fila de campos */
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Grupo de campo */
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Etiquetas */
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Campos de entrada */
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+/* Input enfocado */
+.form-group input:focus {
+  outline: none;
+  border-color: #faa58d;
+}
+
+/* Acciones del formulario */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Botón */
+.form-actions .btn {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+}
+
+/* Botón hover */
+.form-actions .btn:hover {
+  background-color: #86b67f;
+  color: #0a0a0a;
+}
+
+/* Texto debajo del botón */
+.form-actions p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Link */
+.form-actions a {
+  color: #1a1a1a;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+/* Link hover */
+.form-actions a:hover {
+  color: #f5de89;
+}
+
+/* Columna derecha con imagen */
+.register-image {
+  flex: 1 1 400px;             /* Crece, encoge, mínimo 400px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+}
+
+.register-image:hover{
+  transform: scale(1.01);
+}
+
+/* Imagen */
+.register-image img {
+  max-width: 100%;             /* Que no se pase del contenedor */
+}
+
+/* Responsive: en pantallas chicas */
+@media (max-width: 800px) {
+  .register-container {
+    flex-direction: column;    /* Cambia a columna */
+  }
+
+  .register-image {
+    margin-top: 20px;          /* Espacio arriba */
+  }
+}
+
+/* Contenedor del login */
+.login-container {
+  display: flex;                          /* Flexbox para centrar */
+  justify-content: center;               /* Centrado horizontal */
+  align-items: center;                   /* Centrado vertical */
+  min-height: calc(100vh - 140px);       /* Altura restante entre header y footer */
+  background-color: #f2f0c9;             /* Mismo fondo claro que el sitio */
+  padding: 40px 20px;                    /* Espaciado general */
+  background-image: url('../../imgs/manospasto.jpg'); /* Ruta relativa o URL */
+  background-size: cover;     /* Ajusta para que cubra todo el fondo */
+  background-position: center;/* Centra la imagen */
+  background-repeat: no-repeat; /* No se repite */
+}
+
+/* Caja de login */
+.login-form {
+  background-color: #ffffff;             /* Fondo blanco */
+  padding: 40px;                         /* Espaciado interno */
+  border-radius: 10px;                   /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);/* Sombra igual al resto del sitio */
+  max-width: 450px;                      /* Ancho máximo */
+  width: 100%;                           /* Que no se pase */
+  transition: transform 0.3s ease;       /* Suave al hacer hover */
+}
+
+/* Efecto hover */
+.login-form:hover {
+  transform: scale(1.01);
+}
+
+/* Título */
+.login-form h1 {
+  font-size: 2rem;                       /* Tamaño destacado */
+  margin-bottom: 10px;                  /* Separación */
+  color: #1a1a1a;                        /* Color fuerte */
+}
+
+/* Texto descriptivo */
+.login-form p {
+  margin-bottom: 20px;
+  color: #555;                           /* Gris medio */
+}
+
+/* Formulario */
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Etiquetas */
+.auth-form label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Inputs */
+.auth-form input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+/* Focus en input */
+.auth-form input:focus {
+  outline: none;
+  border-color: #faa58d;
+}
+
+/* Acciones del login */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Botón de login */
+.form-actions .btn.btn-block {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Hover del botón */
+.form-actions .btn.btn-block:hover {
+  background-color: #86b67f;
+  color: #0a0a0a;
+}
+
+/* Texto de abajo */
+.form-actions p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Link de registro */
+.form-actions .register-link {
+  color: #1a1a1a;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+/* Hover del link */
+.form-actions .register-link:hover {
+  color: #f5de89;
+}
+
+
+
+footer {
+    background-color: #0a0a0a; /* Fondo oscuro */
+    color: #757575; /* Color del texto en el footer */
+    padding: 10px 20px; /* Espacio en el pie de página */
+    width: 100%; /* Ocupa todo el ancho */
+    margin-top: auto; /* Empuja el pie de página al fondo */
+    margin-bottom: 0px;
+    z-index: 1;
+}
+
+footer img {
+  transition: transform 0.3s ease;
+}
+
+footer img:hover {
+  transform: scale(1.05);
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    background-color: #111;
+    color: white;
+    width: 220px;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar ul li.active a {
+    background-color: #333;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background: #e0e0e0;
+}
+
+.solicitudes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.solicitud-card {
+    display: flex;
+    align-items: center;
+    background: #1e1e1e;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    gap: 20px;
+    transition: transform 0.5s ease;
+}
+
+.solicitud-card:hover {
+    transform: scale(1.01);
+}
+
+.foto-perfil {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.acciones {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn.aceptar {
+    background-color: #86b67f;
+    color: black;
+    transition: background-color 0.5s;
+}
+
+.btn.aceptar:hover {
+    background-color: #0f0;
+    color: white;
+}
+
+.btn.rechazar {
+    background-color: #faa58d;
+    color: black;
+    transition: background-color 0.5s;
+}
+
+.btn.rechazar:hover {
+    background-color: #f00;
+    color: white;
+}
+
+.btn-lang {
+    background: transparent;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
