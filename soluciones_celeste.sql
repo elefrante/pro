@@ -1,13 +1,5 @@
 create database soluciones_celeste;
 use soluciones_celeste;
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2025 a las 16:19:48
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
