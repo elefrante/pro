@@ -1,4 +1,3 @@
-create database soluciones_celeste;
 use soluciones_celeste;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
